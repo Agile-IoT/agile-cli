@@ -105,6 +105,9 @@ case "$1" in
       rsh docker tag $IMAGE ${IMAGE/:*/}:$TAG
     done
     ;;
+  push)
+    $COMPOSE push
+    ;;
   *)
     echo "Usage: $0 {start|stop|restart|clean|update|compose|install}
          install: create symbolic link in /usr/local/bin
@@ -115,6 +118,7 @@ case "$1" in
          update: download newest version of docker containers
          compose: use docker-compose commands for fine-grained control (e.g. agile compose logs)
          tag <newtag>: tag all images with newtag
+         push: push all images on dockerhub
     "
     exit 1
     ;;
