@@ -105,6 +105,14 @@ case "$1" in
       rsh docker tag $IMAGE ${IMAGE/:*/}:$TAG
     done
     ;;
+  tag-push)
+    shift
+    TAG=$1
+    for IMAGE in `grep image: $BINDIR/docker-compose.yml | sed s/image://` ; do
+      rsh docker tag $IMAGE ${IMAGE/:*/}:$TAG
+      rsh docker push ${IMAGE/:*/}:$TAG
+    done
+    ;;
   push)
     $COMPOSE push
     ;;
@@ -119,6 +127,7 @@ case "$1" in
          compose: use docker-compose commands for fine-grained control (e.g. agile compose logs)
          tag <newtag>: tag all images with newtag
          push: push all images on dockerhub
+         tag-push <newtag>: tag and push tagged images
     "
     exit 1
     ;;
