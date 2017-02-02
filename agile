@@ -20,6 +20,14 @@ wait_for_service (){
   done
 }
 
+rsh (){
+  if [ "$AGILE_MODE" == "local" ] ; then
+    "$@"
+  else
+    ssh root@$AGILE_HOST -p22222 -t "$@"
+  fi
+}
+
 export COMPOSE_HTTP_TIMEOUT=300
 export AGILE_CLIENT_PORT=2000
 export AGILE_ZB_TTY=/dev/ttyUSB0
