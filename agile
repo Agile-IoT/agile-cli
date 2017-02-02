@@ -98,6 +98,13 @@ case "$1" in
   install)
     ln -s $BINDIR/agile /usr/local/bin/
     ;;
+  tag)
+    shift
+    TAG=$1
+    for IMAGE in `grep image: $BINDIR/docker-compose.yml | sed s/image://` ; do
+      rsh docker tag $IMAGE ${IMAGE/:*/}:$TAG
+    done
+    ;;
   *)
     echo "Usage: $0 {start|stop|restart|clean|update|compose|install}
          install: create symbolic link in /usr/local/bin
@@ -107,6 +114,7 @@ case "$1" in
          clean: stop and remove all containers. AGILE persistent state will remain, but docker containers will be reinitialized
          update: download newest version of docker containers
          compose: use docker-compose commands for fine-grained control (e.g. agile compose logs)
+         tag <newtag>: tag all images with newtag
     "
     exit 1
     ;;
