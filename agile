@@ -95,6 +95,10 @@ case "$1" in
     shift
     $COMPOSE "$@"
     ;;
+  docker)
+    shift
+    rsh docker "$@"
+    ;;
   install)
     ln -s $BINDIR/agile /usr/local/bin/
     ;;
@@ -125,6 +129,7 @@ case "$1" in
          clean: stop and remove all containers. AGILE persistent state will remain, but docker containers will be reinitialized
          update: download newest version of docker containers
          compose: use docker-compose commands for fine-grained control (e.g. agile compose logs)
+         docker: use docker commands for fine-grained control (e.g. agile docker ps)
          tag <newtag>: tag all images with newtag
          push: push all images on dockerhub
          tag-push <newtag>: tag and push tagged images
