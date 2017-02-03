@@ -68,6 +68,7 @@ case "$1" in
     $COMPOSE up -d agile-zb
     sleep 3
     $COMPOSE up -d agile-zb-lamp
+    $COMPOSE up -d
     ;;
   stop)
     $COMPOSE stop
