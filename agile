@@ -78,15 +78,15 @@ case "$1" in
     shift
     TAG=$1
     for IMAGE in `grep image: $BINDIR/docker-compose.yml | sed s/image://` ; do
-      rsh docker tag $IMAGE ${IMAGE/:*/}:$TAG
+      docker tag $IMAGE ${IMAGE/:*/}:$TAG
     done
     ;;
   tag-push)
     shift
     TAG=$1
     for IMAGE in `grep image: $BINDIR/docker-compose.yml | sed s/image://` ; do
-      rsh docker tag $IMAGE ${IMAGE/:*/}:$TAG
-      rsh docker push ${IMAGE/:*/}:$TAG
+      docker tag $IMAGE ${IMAGE/:*/}:$TAG
+      docker push ${IMAGE/:*/}:$TAG
     done
     ;;
   push)
