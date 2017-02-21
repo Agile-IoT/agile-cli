@@ -23,6 +23,9 @@ wait_for_service (){
 #export COMPOSE_HTTP_TIMEOUT=300
 
 case "$1" in
+  init)
+    agile-gw-init
+  ;;
   start)
     $COMPOSE up -d agile-core
     $COMPOSE up -d agile-ble
@@ -92,6 +95,7 @@ case "$1" in
   *)
     echo "Usage: $0 {start|stop|restart|clean|update|compose|install}
          install: create symbolic link in /usr/local/bin
+         init: run platform specific initialization commands
          start: start all AGILE components
          stop: stop all AGILE components
          restart: stop and then start
