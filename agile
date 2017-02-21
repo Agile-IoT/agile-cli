@@ -6,8 +6,8 @@ realpath . &>/dev/null || realpath() {
     [[ $P = /* ]] && echo "$P" || echo "$PWD/${P#./}"
 }
 BINDIR=$(dirname $(realpath $0))
-COMPOSE="docker-compose -f $BINDIR/docker-compose.yml"
 [ -r "$BINDIR/agile.config" ] && . "$BINDIR/agile.config"
+COMPOSE="docker-compose -f $AGILE_STACK/docker-compose.yml"
 
 is_service_up (){
   [ $(curl -sL -w "%{http_code}\\n" "$1" -o /dev/null) -eq "$2" ]
@@ -20,39 +20,7 @@ wait_for_service (){
   done
 }
 
-rsh (){
-  if [ "$AGILE_MODE" == "local" ] ; then
-    "$@"
-  else
-    ssh root@$AGILE_HOST -p22222 -t "$@"
-  fi
-}
-
-export COMPOSE_HTTP_TIMEOUT=300
-export AGILE_CLIENT_PORT=2000
-export AGILE_ZB_TTY=/dev/ttyUSB0
-
-if [ "$AGILE_MODE" == "local" ] ; then
-  AGILE_HOST=${AGILE_HOST:-"localhost"}
-
-  export DATA=$HOME/.agile
-  export ARCH=`uname -m`
-else
-  AGILE_HOST=${AGILE_HOST:-"resin.local"}
-
-  # Agile-ble runs the bluetooth service so we must stop the hosts
-  ssh root@$AGILE_HOST -p22222 'systemctl stop bluetooth'
-
-  export DOCKER_API_VERSION=1.22
-  export DOCKER_HOST=tcp://$AGILE_HOST:2375
-  # Because resinos is read-only fs we must write to /mnt/data/
-  export DATA=/mnt/data/.agile
-fi
-export DBUS_SYSTEM_SOCKET=/var/run/dbus/system_bus_socket
-export DBUS_SESSION_SOCKET_DIR=$DATA/agile_bus/
-export DBUS_SESSION_SOCKET_NAME=agile_bus_socket
-export DBUS_SESSION_SOCKET=$DBUS_SESSION_SOCKET_DIR/$DBUS_SESSION_SOCKET_NAME
-export DBUS_SESSION_BUS_ADDRESS=unix:path=$DBUS_SESSION_SOCKET
+#export COMPOSE_HTTP_TIMEOUT=300
 
 case "$1" in
   start)
@@ -98,7 +66,7 @@ case "$1" in
     ;;
   docker)
     shift
-    rsh docker "$@"
+    docker "$@"
     ;;
   install)
     ln -s $BINDIR/agile /usr/local/bin/

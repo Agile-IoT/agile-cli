@@ -1,0 +1,15 @@
+export AGILE_STACK=../agile-stack
+
+unset DOCKER_HOST
+export DATA=$HOME/.agile
+export DOCKER_API_VERSION=1.22
+
+export DBUS_SYSTEM_SOCKET=/var/run/dbus/system_bus_socket
+export DBUS_SESSION_SOCKET_DIR=$DATA/agile_bus/
+export DBUS_SESSION_SOCKET_NAME=agile_bus_socket
+export DBUS_SESSION_SOCKET=$DBUS_SESSION_SOCKET_DIR/$DBUS_SESSION_SOCKET_NAME
+export DBUS_SESSION_BUS_ADDRESS=unix:path=$DBUS_SESSION_SOCKET
+
+agile-gw-init () {
+    echo "initializing AGILE GW"
+}
