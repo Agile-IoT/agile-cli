@@ -1,7 +1,7 @@
 export AGILE_STACK=../agile-stack
+export AGILE_HOST=resin.local
 
-export AGILE_GW=resin.local
-export DOCKER_HOST=tcp://$AGILE_GW:2375
+export DOCKER_HOST=tcp://$AGILE_HOST:2375
 # Because resinos is read-only fs we must write to /mnt/data/
 export DATA=/mnt/data/.agile
 export DOCKER_API_VERSION=1.22
@@ -14,6 +14,6 @@ export DBUS_SESSION_BUS_ADDRESS=unix:path=$DBUS_SESSION_SOCKET
 
 agile-gw-init () {
   echo "initializing AGILE GW"
-  ssh root@$AGILE_GW -p22222 '/usr/bin/hciattach /dev/ttyAMA0 bcm43xx 921600 noflow - ;
+  ssh root@$AGILE_HOST -p22222 '/usr/bin/hciattach /dev/ttyAMA0 bcm43xx 921600 noflow - ;
                               systemctl stop bluetooth'
 }
