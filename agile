@@ -1,13 +1,22 @@
 #!/bin/bash
 
-realpath . &>/dev/null || realpath() {
-    P=$1
-    while readlink $P >/dev/null; do P=`readlink $P`; done
-    [[ $P = /* ]] && echo "$P" || echo "$PWD/${P#./}"
+usage(){
+    echo "Usage: $0 [-c configfile] {start|stop|restart|clean|update|compose|install}
+         -c configfile: platform specific config file (default:agile.config)
+         install: create symbolic link in /usr/local/bin
+         init: run platform specific initialization commands
+         start: start all AGILE components
+         stop: stop all AGILE components
+         restart: stop and then start
+         clean: stop and remove all containers. AGILE persistent state will remain, but docker containers will be reinitialized
+         update: download newest version of docker containers
+         compose: use docker-compose commands for fine-grained control (e.g. agile compose logs)
+         docker: use docker commands for fine-grained control (e.g. agile docker ps)
+         tag <newtag>: tag all images with newtag
+         push: push all images on dockerhub
+         tag-push <newtag>: tag and push tagged images
+    "
 }
-BINDIR=$(dirname $(realpath $0))
-[ -r "$BINDIR/agile.config" ] && . "$BINDIR/agile.config"
-COMPOSE="docker-compose -f $AGILE_STACK/docker-compose.yml"
 
 is_service_up (){
   [ $(curl -sL -w "%{http_code}\\n" "$1" -o /dev/null) -eq "$2" ]
@@ -20,7 +29,36 @@ wait_for_service (){
   done
 }
 
+#set defaults
+realpath . &>/dev/null || realpath() {
+    P=$1
+    while readlink $P >/dev/null; do P=`readlink $P`; done
+    [[ $P = /* ]] && echo "$P" || echo "$PWD/${P#./}"
+}
+BINDIR=$(dirname $(realpath $0))
+CONFIG="$BINDIR/agile.config"
 #export COMPOSE_HTTP_TIMEOUT=300
+
+while getopts c: FLAG; do
+  case $FLAG in
+    c)
+      CONFIG=$OPTARG
+      ;;
+    h)
+      usage
+      ;;
+    \?)
+      echo "Option -$OPTARG not allowed."
+      usage
+      ;;
+  esac
+done
+
+[ -r "$CONFIG" ] && . $CONFIG
+COMPOSE="docker-compose -f $AGILE_STACK/docker-compose.yml"
+
+#remove already parsed args
+shift $((OPTIND-1))
 
 case "$1" in
   init)
@@ -93,20 +131,7 @@ case "$1" in
     $COMPOSE push
     ;;
   *)
-    echo "Usage: $0 {start|stop|restart|clean|update|compose|install}
-         install: create symbolic link in /usr/local/bin
-         init: run platform specific initialization commands
-         start: start all AGILE components
-         stop: stop all AGILE components
-         restart: stop and then start
-         clean: stop and remove all containers. AGILE persistent state will remain, but docker containers will be reinitialized
-         update: download newest version of docker containers
-         compose: use docker-compose commands for fine-grained control (e.g. agile compose logs)
-         docker: use docker commands for fine-grained control (e.g. agile docker ps)
-         tag <newtag>: tag all images with newtag
-         push: push all images on dockerhub
-         tag-push <newtag>: tag and push tagged images
-    "
+    usage
     exit 1
     ;;
 esac
