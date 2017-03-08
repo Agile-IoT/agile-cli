@@ -83,7 +83,7 @@ case "$1" in
     $COMPOSE stop
     ;;
   clean)
-    $COMPOSE down
+    $COMPOSE down --remove-orphans
     ;;
   restart)
     $0 stop
