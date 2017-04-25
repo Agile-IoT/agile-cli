@@ -77,18 +77,22 @@ case "$1" in
     $COMPOSE up -d
     ;;
   stop)
-    $COMPOSE stop
+    shift
+    $COMPOSE stop "$@"
     ;;
   clean)
-    $COMPOSE down --remove-orphans
+    shift
+    $COMPOSE down --remove-orphans "$@"
     ;;
   restart)
+    shift
     $0 stop
     sleep 1
     $0 start
     ;;
   update)
-    $COMPOSE pull
+    shift
+    $COMPOSE pull "$@"
     ;;
   zb-start)
     $COMPOSE up -d agile-zb
