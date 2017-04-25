@@ -55,6 +55,8 @@ while getopts c: FLAG; do
 done
 
 [ -r "$CONFIG" ] && . $CONFIG
+[[ $AGILE_STACK = /* ]] || AGILE_STACK=$BINDIR/$AGILE_STACK
+
 COMPOSE="docker-compose -f $AGILE_STACK/docker-compose.yml"
 
 #remove already parsed args
