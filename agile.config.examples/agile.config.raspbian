@@ -1,5 +1,6 @@
 export AGILE_STACK=../agile-stack
 export AGILE_HOST=agilegw.local
+export AGILE_ARCH=armv7l
 
 export DOCKER_HOST=tcp://$AGILE_HOST:2375
 export DATA=/home/pi/.agile
