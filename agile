@@ -118,16 +118,16 @@ case "$1" in
   tag)
     shift
     TAG=$1
-    for IMAGE in `grep image: $BINDIR/docker-compose.yml | sed s/image://` ; do
-      docker tag $IMAGE ${IMAGE/:*/}:$TAG
+    for IMAGE in `grep "^[^#]*image:" $AGILE_STACK/docker-compose.yml | sed s/image://` ; do
+      eval docker tag $IMAGE ${IMAGE/:*/}:$TAG
     done
     ;;
   tag-push)
     shift
     TAG=$1
-    for IMAGE in `grep image: $BINDIR/docker-compose.yml | sed s/image://` ; do
-      docker tag $IMAGE ${IMAGE/:*/}:$TAG
-      docker push ${IMAGE/:*/}:$TAG
+    for IMAGE in `grep "^[^#]*image:" $AGILE_STACK/docker-compose.yml | sed s/image://` ; do
+      eval docker tag $IMAGE ${IMAGE/:*/}:$TAG
+      eval docker push ${IMAGE/:*/}:$TAG
     done
     ;;
   push)
