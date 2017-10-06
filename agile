@@ -67,6 +67,8 @@ done
 [[ $AGILE_STACK = /* ]] || AGILE_STACK=$BINDIR/$AGILE_STACK
 
 COMPOSE="docker-compose -f $AGILE_STACK/docker-compose.yml"
+[ -e $AGILE_STACK/docker-compose.override.yml ] && COMPOSE+=" -f $AGILE_STACK/docker-compose.override.yml"
+
 
 #remove already parsed args
 shift $((OPTIND-1))
