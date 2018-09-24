@@ -51,10 +51,6 @@ For simplicity, the tool can self-install the `agile` command in the path with
 sudo ./agile install
 ```
 
-## initializing the GW
-
-First of all, if not yet done, the GW should be initialized with `./agile init`
-
 ## Usage
 
 Use `./agile start` to start the main components, and `./agile stop` to stop them.

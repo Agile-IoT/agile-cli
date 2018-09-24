@@ -15,7 +15,6 @@ usage(){
     echo "Usage: $0 [-c configfile] {start|stop|restart|clean|update|compose|install}
          -c configfile: platform specific config file (default:agile.config)
          install: create symbolic link in /usr/local/bin
-         init: run platform specific initialization commands
          start: start all AGILE components
          stop: stop all AGILE components
          restart: stop and then start
@@ -84,9 +83,6 @@ COMPOSE="docker-compose"
 shift $((OPTIND-1))
 
 case "$1" in
-  init)
-    agile-gw-init
-  ;;
   start)
     $COMPOSE up -d
     wait_for_service "http://$AGILE_HOST:8080" 404

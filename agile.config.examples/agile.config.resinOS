@@ -25,8 +25,3 @@ export DBUS_SESSION_SOCKET_NAME=agile_bus_socket
 export DBUS_SESSION_SOCKET=$DBUS_SESSION_SOCKET_DIR/$DBUS_SESSION_SOCKET_NAME
 export DBUS_SESSION_BUS_ADDRESS=unix:path=$DBUS_SESSION_SOCKET
 
-agile-gw-init () {
-  echo "initializing AGILE GW"
-  ssh root@$AGILE_HOST -p22222 '/usr/bin/hciattach /dev/ttyAMA0 bcm43xx 921600 noflow - ;
-                              systemctl stop bluetooth'
-}
