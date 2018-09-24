@@ -68,8 +68,11 @@ done
 [ -r "$CONFIG" ] && . $CONFIG
 [[ $AGILE_STACK = /* ]] || AGILE_STACK=$BINDIR/$AGILE_STACK
 
-COMPOSE="docker-compose -f $AGILE_STACK/docker-compose.yml"
-[ -e $AGILE_STACK/docker-compose.override.yml ] && COMPOSE+=" -f $AGILE_STACK/docker-compose.override.yml"
+cd $AGILE_STACK
+
+COMPOSE="docker-compose"
+
+[ -r docker-compose.yml ] || { echo "$AGILE_STACK/docker-compose.yml not found. Please check the agile.config file" && exit 3; }
 
 
 #remove already parsed args
