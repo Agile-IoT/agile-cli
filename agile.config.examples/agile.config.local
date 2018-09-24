@@ -11,16 +11,6 @@
 #     Create-Net / FBK - initial API and implementation
 #-------------------------------------------------------------------------------
 export AGILE_STACK=../agile-stack
-export AGILE_HOST=localhost
-export AGILE_ARCH=armv7l
 
-unset DOCKER_HOST
-export DATA=$HOME/.agile
-export DOCKER_API_VERSION=1.22
-
-export DBUS_SYSTEM_SOCKET=/var/run/dbus/system_bus_socket
-export DBUS_SESSION_SOCKET_DIR=$DATA/agile_bus/
-export DBUS_SESSION_SOCKET_NAME=agile_bus_socket
-export DBUS_SESSION_SOCKET=$DBUS_SESSION_SOCKET_DIR/$DBUS_SESSION_SOCKET_NAME
-export DBUS_SESSION_BUS_ADDRESS=unix:path=$DBUS_SESSION_SOCKET
-
+# please set up the stack in $AGILE_STACK/.env
+# for details, see $AGILE_STACK/.env.example
