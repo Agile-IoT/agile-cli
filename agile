@@ -65,7 +65,11 @@ while getopts c: FLAG; do
   esac
 done
 
+
 [ -r "$CONFIG" ] && . $CONFIG
+
+[ -n "$AGILE_STACK" ] || { echo "AGILE_STACK variable is not configured. Please check the agile.config file" && exit 2; }
+
 [[ $AGILE_STACK = /* ]] || AGILE_STACK=$BINDIR/$AGILE_STACK
 
 cd $AGILE_STACK
@@ -74,6 +78,7 @@ COMPOSE="docker-compose"
 
 [ -r docker-compose.yml ] || { echo "$AGILE_STACK/docker-compose.yml not found. Please check the agile.config file" && exit 3; }
 
+[ -r .env ] && . .env || { echo "The AGILE stack is not configured. Please check the .env.example file in $AGILE_STACK" && exit 4; }
 
 #remove already parsed args
 shift $((OPTIND-1))
